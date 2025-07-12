@@ -5,10 +5,10 @@ import sys
 
 def main():
 
-    basepath = sys.argv[0] or "/"
+    basepath = sys.argv[0] or ""
 
     staticToPublic()
-    generate_pages_recursive('content', 'template.html', 'docs', basepath)
+    generate_pages_recursive('content', 'template.html', 'public', basepath)
 
 def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, basepath):
 
@@ -47,8 +47,7 @@ def generate_page(from_path, template_path, dest_path, basepath):
     title = extract_title(markdown_content) or ""
 
     page_content = template_content.replace("{{ Title }}", title).replace("{{ Content }}", html_content)
-    
-    page_content = page_content.replace('href="/', 'href="').replace('src="/', 'src="')
+    page_content.replace('href="/', f'href="{basepath}').replace('src="/', f'src={basepath}')
 
     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
 
